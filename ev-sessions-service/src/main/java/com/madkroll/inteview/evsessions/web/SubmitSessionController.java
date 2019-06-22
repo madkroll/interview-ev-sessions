@@ -1,6 +1,7 @@
 package com.madkroll.inteview.evsessions.web;
 
-import com.madkroll.inteview.evsessions.service.SessionService;
+import com.madkroll.inteview.evsessions.service.ChargingSession;
+import com.madkroll.inteview.evsessions.service.SessionStatefulService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class SubmitSessionController {
 
-    private final SessionService sessionService;
+    private final SessionStatefulService sessionService;
 
-    public SubmitSessionController(final SessionService sessionService) {
+    public SubmitSessionController(final SessionStatefulService sessionService) {
         this.sessionService = sessionService;
     }
 
     @RequestMapping("/chargingSessions")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<SubmitSessionResponse> submit(@RequestBody final SubmitSessionRequest submitSessionRequest) {
+        final ChargingSession session = sessionService.submit(submitSessionRequest.getStationId());
+
+        log.debug("Submitted new session {} at station {}", session.getId(), session.getStationId());
+
         return ResponseEntity
                 .ok()
-                .body(sessionService.submit(submitSessionRequest.getStationId()));
+                .body(new SubmitSessionResponse(
+                        session.getId().toString(),
+                        session.getStationId(),
+                        session.getUpdatedAt().toString()
+                ));
     }
 }

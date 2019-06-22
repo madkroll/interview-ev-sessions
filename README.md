@@ -1,6 +1,12 @@
 # interview-ev-sessions
 Coding assignment: EV charging sessions RESTful API
 
+## Used frameworks:
+- Maven
+- Spring Boot
+- Lombok
+- Karate - for API testing (https://github.com/intuit/karate)
+
 ## Setup
 ```
 git clone git://github.com/madkroll/interview-ev-sessions.git
