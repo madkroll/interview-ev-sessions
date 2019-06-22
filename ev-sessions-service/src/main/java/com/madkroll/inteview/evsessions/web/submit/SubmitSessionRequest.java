@@ -1,4 +1,4 @@
-package com.madkroll.inteview.evsessions.web;
+package com.madkroll.inteview.evsessions.web.submit;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

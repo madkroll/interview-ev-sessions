@@ -1,6 +1,11 @@
 - check if guava is needed
-- validate updatedAt datetime format: 2019-05-06T19:00:20.529
 - multiple stations
 - validate app runs on Java 8
+- exception handling - including 500
+- adjust logging level
 
 ## Documentation
+
+## Possible issues
+- get and put operations are not atomic, so possible race condition (two threads are competing to put different data).
+However business value in setting synchronization around it is not clear.

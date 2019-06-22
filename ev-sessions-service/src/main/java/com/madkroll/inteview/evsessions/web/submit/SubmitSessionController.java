@@ -1,4 +1,4 @@
-package com.madkroll.inteview.evsessions.web;
+package com.madkroll.inteview.evsessions.web.submit;
 
 import com.madkroll.inteview.evsessions.service.ChargingSession;
 import com.madkroll.inteview.evsessions.service.SessionStatefulService;
@@ -25,7 +25,7 @@ public class SubmitSessionController {
     public ResponseEntity<SubmitSessionResponse> submit(@RequestBody final SubmitSessionRequest submitSessionRequest) {
         final ChargingSession session = sessionService.submit(submitSessionRequest.getStationId());
 
-        log.debug("Submitted new session {} at station {}", session.getId(), session.getStationId());
+        log.info("Submitted new session {} at station {}", session.getId(), session.getStationId());
 
         return ResponseEntity
                 .ok()

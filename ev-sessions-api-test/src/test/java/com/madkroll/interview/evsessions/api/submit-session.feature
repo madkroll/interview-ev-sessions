@@ -3,7 +3,7 @@ Feature: Submit Session Service endpoint
   Background:
     * url baseUrl
 
-  Scenario: Submitting new session works and returns valid response
+  Scenario: Submitting a new session works and returns a valid response
     * def stationId = 'submit-session-test-id'
     Given url baseUrl + '/chargingSessions'
     * header Accept = 'application/json'
