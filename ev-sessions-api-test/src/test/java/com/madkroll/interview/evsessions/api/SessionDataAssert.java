@@ -23,4 +23,9 @@ public class SessionDataAssert {
     public static boolean isPositive(final Integer value) {
         return value > 0;
     }
+
+    public static boolean summaryIsCorrect(final int totalCount, final int startedCount, final int stoppedCount) {
+        return totalCount >= 0 && startedCount >= 0 && stoppedCount >= 0
+                && totalCount == startedCount + stoppedCount;
+    }
 }

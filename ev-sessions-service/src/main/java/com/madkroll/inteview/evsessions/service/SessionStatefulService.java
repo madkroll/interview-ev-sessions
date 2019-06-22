@@ -1,19 +1,21 @@
 package com.madkroll.inteview.evsessions.service;
 
 import com.google.common.collect.ImmutableList;
+import com.madkroll.inteview.evsessions.web.summary.SummaryResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class SessionStatefulService {
 
-    private final Map<String, ChargingSession> sessions;
+    private final ConcurrentHashMap<String, ChargingSession> sessions;
 
-    public SessionStatefulService(final Map<String, ChargingSession> sessions) {
+    public SessionStatefulService(final ConcurrentHashMap<String, ChargingSession> sessions) {
         this.sessions = sessions;
     }
 
@@ -66,5 +68,25 @@ public class SessionStatefulService {
 
     public List<ChargingSession> list() {
         return ImmutableList.copyOf(sessions.values());
+    }
+
+    public SummaryResponse calculateSummary() {
+        final LocalDateTime minuteAgo = LocalDateTime.now().minusMinutes(1);
+
+        final List<ChargingSession> sinceMinuteAgoSessions =
+                sessions.values()
+                        .stream()
+                        .filter(chargingSession -> chargingSession.getUpdatedAt().isAfter(minuteAgo))
+                        .collect(Collectors.toList());
+
+        final int total = sinceMinuteAgoSessions.size();
+        final int inProgress =
+                (int) sinceMinuteAgoSessions
+                        .stream()
+                        .filter(chargingSession -> chargingSession.getStatus() == StatusEnum.IN_PROGRESS)
+                        .count();
+        final int finished = total - inProgress;
+
+        return new SummaryResponse(total, inProgress, finished);
     }
 }

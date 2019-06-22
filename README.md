@@ -19,10 +19,15 @@ mvn clean package
 ```
 # submit new session
 curl -v -d '{"stationId":"test-id"}' -H "Content-Type: application/json" -X POST "http://localhost:8080/chargingSessions"
+
 # finish existent session
 curl -v -X PUT "http://localhost:8080/chargingSessions/${SESSION_ID}"
+
 # list all stored sessions
 curl -v -X GET "http://localhost:8080/chargingSessions"
+
+# request last minute summary
+curl -v -X GET "http://localhost:8080/chargingSessions/summary"
 ```
 ### Using API tests
 ```
