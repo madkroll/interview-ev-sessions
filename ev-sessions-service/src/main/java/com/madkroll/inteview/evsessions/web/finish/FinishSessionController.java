@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +19,7 @@ public class FinishSessionController {
         this.sessionService = sessionService;
     }
 
-    @RequestMapping("/chargingSessions/{sessionId}")
-    @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/chargingSessions/{sessionId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<FinishSessionResponse> finishSession(@PathVariable final String sessionId) {
         final ChargingSession session = sessionService.finish(sessionId);
 

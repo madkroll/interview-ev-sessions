@@ -12,5 +12,5 @@ Feature: Submit Session Service endpoint
     Then status 200
     * match response.error == '#notpresent'
     * match response == { id: '#uuid', stationId: '#(stationId)', updatedAt: '#present' }
-    * def DateTimeAssert = Java.type('com.madkroll.interview.evsessions.api.DateTimeAssert')
-    * assert DateTimeAssert.isValid(response.updatedAt)
+    * def SessionDataAssert = Java.type('com.madkroll.interview.evsessions.api.SessionDataAssert')
+    * assert SessionDataAssert.isValidDateTime(response.updatedAt)

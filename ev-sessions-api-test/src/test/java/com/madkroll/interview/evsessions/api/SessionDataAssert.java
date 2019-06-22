@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-public class DateTimeAssert {
+public class SessionDataAssert {
 
-    private static final Logger log = LoggerFactory.getLogger(DateTimeAssert.class);
+    private static final Logger log = LoggerFactory.getLogger(SessionDataAssert.class);
 
-    public static boolean isValid(final String dateTimeAsString) {
+    public static boolean isValidDateTime(final String dateTimeAsString) {
         try {
             LocalDateTime.parse(dateTimeAsString);
             return true;
@@ -18,5 +18,9 @@ public class DateTimeAssert {
             log.error("Unable to parse datetime: {}", dateTimeAsString, e);
             return false;
         }
+    }
+
+    public static boolean isPositive(final Integer value) {
+        return value > 0;
     }
 }

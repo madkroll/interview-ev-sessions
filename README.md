@@ -11,13 +11,18 @@ Coding assignment: EV charging sessions RESTful API
 ```
 git clone git://github.com/madkroll/interview-ev-sessions.git
 cd interview-ev-sessions
-mvn clean install
+mvn clean package
 ```
 
 ## Validate installation
 ### Using curl
 ```
+# submit new session
 curl -v -d '{"stationId":"test-id"}' -H "Content-Type: application/json" -X POST "http://localhost:8080/chargingSessions"
+# finish existent session
+curl -v -X PUT "http://localhost:8080/chargingSessions/${SESSION_ID}"
+# list all stored sessions
+curl -v -X GET "http://localhost:8080/chargingSessions"
 ```
 ### Using API tests
 ```
