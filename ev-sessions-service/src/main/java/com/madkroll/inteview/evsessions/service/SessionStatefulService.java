@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @Service
 public class SessionStatefulService {
 
-    private final ConcurrentHashMap<String, ChargingSession> sessions;
+    private final ConcurrentHashMap<String, ChargingSession> sessionsPerKey;
 
-    public SessionStatefulService(final ConcurrentHashMap<String, ChargingSession> sessions) {
-        this.sessions = sessions;
+    public SessionStatefulService(final ConcurrentHashMap<String, ChargingSession> sessionsPerKey) {
+        this.sessionsPerKey = sessionsPerKey;
     }
 
     public ChargingSession submit(final String stationId) {
@@ -31,13 +31,13 @@ public class SessionStatefulService {
                 StatusEnum.IN_PROGRESS
         );
 
-        sessions.put(session.getId().toString(), session);
+        sessionsPerKey.put(session.getId().toString(), session);
 
         return session;
     }
 
     public ChargingSession finish(final String sessionId) {
-        final ChargingSession sessionToFinish = sessions.get(sessionId);
+        final ChargingSession sessionToFinish = sessionsPerKey.get(sessionId);
 
         if (sessionToFinish == null) {
             throw new SessionNotFoundException(String.format("Session does not exist %s", sessionId));
@@ -58,7 +58,7 @@ public class SessionStatefulService {
                 StatusEnum.FINISHED
         );
 
-        sessions.put(
+        sessionsPerKey.put(
                 sessionId,
                 finishedSession
         );
@@ -67,14 +67,14 @@ public class SessionStatefulService {
     }
 
     public List<ChargingSession> list() {
-        return ImmutableList.copyOf(sessions.values());
+        return ImmutableList.copyOf(sessionsPerKey.values());
     }
 
     public SummaryResponse calculateSummary() {
         final LocalDateTime minuteAgo = LocalDateTime.now().minusMinutes(1);
 
         final List<ChargingSession> sinceMinuteAgoSessions =
-                sessions.values()
+                sessionsPerKey.values()
                         .stream()
                         .filter(chargingSession -> chargingSession.getUpdatedAt().isAfter(minuteAgo))
                         .collect(Collectors.toList());
