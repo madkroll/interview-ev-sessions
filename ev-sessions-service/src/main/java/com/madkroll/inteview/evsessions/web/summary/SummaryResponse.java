@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Data object containing summary of stored sessions.
+ */
 @Getter
 @ToString
 @AllArgsConstructor

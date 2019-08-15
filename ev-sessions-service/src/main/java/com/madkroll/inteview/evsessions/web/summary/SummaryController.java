@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Spring MVC REST controller providing endpoint to show session storage summary.
+ * */
 @RestController
 @Log4j2
 public class SummaryController {
@@ -17,6 +20,10 @@ public class SummaryController {
         this.sessionService = sessionService;
     }
 
+    /**
+     * Provides summary of stored sessions.
+     * @return successful response entity containing summary data.
+     * */
     @GetMapping(path = "/chargingSessions/summary", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<SummaryResponse> summary() {
         final SummaryResponse summary = sessionService.calculateSummary();

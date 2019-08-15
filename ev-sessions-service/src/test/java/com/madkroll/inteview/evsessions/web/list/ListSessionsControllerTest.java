@@ -37,7 +37,7 @@ public class ListSessionsControllerTest {
             LocalDateTime.parse(STARTED_AT).plusMinutes(1),
             LocalDateTime.parse(STARTED_AT).plusMinutes(1).plusSeconds(1),
             LocalDateTime.parse(STARTED_AT).plusMinutes(1).plusSeconds(1),
-            StatusEnum.IN_PROGRESS
+            StatusEnum.FINISHED
     );
 
     private static final List<ChargingSession> STORED_SESSIONS = ImmutableList.of(

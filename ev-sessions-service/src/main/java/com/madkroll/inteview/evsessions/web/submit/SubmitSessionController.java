@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
+/**
+ * Spring MVC REST controller providing endpoint to submit new charging session.
+ * */
 @RestController
 @Log4j2
 public class SubmitSessionController {
@@ -19,11 +24,16 @@ public class SubmitSessionController {
         this.sessionService = sessionService;
     }
 
+    /**
+     * Submits new charging session in target station.
+     * @param submitSessionRequest object representing request body required to submit new charging session
+     * @return successful response entity containing data of submitted charging session.
+     * */
     @PostMapping(
             path = "/chargingSessions",
             consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<SubmitSessionResponse> submit(@RequestBody final SubmitSessionRequest submitSessionRequest) {
+    public ResponseEntity<SubmitSessionResponse> submit(@Valid @RequestBody final SubmitSessionRequest submitSessionRequest) {
         final ChargingSession session = sessionService.submit(submitSessionRequest.getStationId());
 
         log.info("Submitted new session {} at station {}", session.getId(), session.getStationId());

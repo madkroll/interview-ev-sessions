@@ -5,11 +5,14 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Spring configuration grouping all storage-specific Spring bean definitions.
+ * */
 @Configuration
 public class StorageConfiguration {
 
     @Bean
-    public ConcurrentHashMap<String, ChargingSession> sessionStorage() {
+    public ConcurrentHashMap<String, ChargingSession> sessionsPerKey() {
         return new ConcurrentHashMap<>();
     }
 }

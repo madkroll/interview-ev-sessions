@@ -14,6 +14,9 @@ import java.util.List;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Spring MVC REST controller providing endpoint to list all stored sessions.
+ * */
 @RestController
 @Log4j2
 public class ListSessionsController {
@@ -24,6 +27,10 @@ public class ListSessionsController {
         this.sessionService = sessionService;
     }
 
+    /**
+     * Lists all stored charging sessions.
+     * @return successful response entity containing data of all stored sessions.
+     * */
     @GetMapping(path = "/chargingSessions", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<ListSessionsResponseItem>> list() {
         final List<ChargingSession> sessions = sessionService.list();

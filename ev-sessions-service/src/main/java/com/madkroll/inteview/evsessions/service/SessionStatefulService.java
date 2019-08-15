@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,8 +16,12 @@ public class SessionStatefulService {
 
     private final ConcurrentHashMap<String, ChargingSession> sessionsPerKey;
 
-    public SessionStatefulService(final ConcurrentHashMap<String, ChargingSession> sessionsPerKey) {
+    private final BiFunction<String, ChargingSession, ChargingSession> finishSession;
+
+    public SessionStatefulService(final ConcurrentHashMap<String, ChargingSession> sessionsPerKey,
+                                  final BiFunction<String, ChargingSession, ChargingSession> finishSession) {
         this.sessionsPerKey = sessionsPerKey;
+        this.finishSession = finishSession;
     }
 
     public ChargingSession submit(final String stationId) {
@@ -37,31 +42,11 @@ public class SessionStatefulService {
     }
 
     public ChargingSession finish(final String sessionId) {
-        final ChargingSession sessionToFinish = sessionsPerKey.get(sessionId);
+        final ChargingSession finishedSession = sessionsPerKey.computeIfPresent(sessionId, finishSession);
 
-        if (sessionToFinish == null) {
+        if (finishedSession == null) {
             throw new SessionNotFoundException(String.format("Session does not exist %s", sessionId));
         }
-
-        if (sessionToFinish.getStatus() == StatusEnum.FINISHED) {
-            throw new SessionNotFoundException(String.format("Session has been already finished %s", sessionId));
-        }
-
-        final LocalDateTime finishedAt = LocalDateTime.now();
-
-        final ChargingSession finishedSession = new ChargingSession(
-                sessionToFinish.getId(),
-                sessionToFinish.getStationId(),
-                sessionToFinish.getStartedAt(),
-                finishedAt,
-                finishedAt,
-                StatusEnum.FINISHED
-        );
-
-        sessionsPerKey.put(
-                sessionId,
-                finishedSession
-        );
 
         return finishedSession;
     }

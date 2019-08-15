@@ -6,6 +6,9 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Data object describing charging session entity.
+ * */
 @Getter
 @AllArgsConstructor
 public class ChargingSession {
